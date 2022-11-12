@@ -1,6 +1,6 @@
 {
   "name": "discodfivemapi",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Package to connect FiveM api to Discord JS",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/KauanAraujoDev/discordfivemapi.git"
   },
+  "keywords": [
+    "fivem",
+    "api",
+    "discord",
+    "discord.js",
+    "fivemapi",
+    "fivem-api",
+    "fivem-api-discord",
+    "fivem-api-discord.js",
+    "discordfivemapi"
+  ],
   "author": "PurpleShop and Kauan Araujo",
   "license": "ISC",
   "bugs": {
