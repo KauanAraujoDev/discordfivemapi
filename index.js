@@ -2,8 +2,9 @@ const axios = require('axios');
 const http = require('http');
 
 const connectionApiFailed = 'Connection to API failed';
+const timeout = { timeout: 5000 };
 
-class ConnectionApi {
+class Server {
     constructor(ip, port) {
         this.ip = ip;
         this.port = port;
@@ -11,21 +12,120 @@ class ConnectionApi {
 
     async getServerDynamic() {
         return new Promise((result, reject) => {
-            axios.get(`http://${this.ip}:${this.port}/dynamic.json`, { timeout: 5000 })
+            axios.get(`http://${this.ip}:${this.port}/dynamic.json`, timeout)
                 .then(function (body) {
                     result({ 
                         online: true, 
                         dynamic: body.data
                     });
-                })
-                .catch(function () {
-                    result({ 
-                        message: connectionApiFailed, 
-                        online: false, 
-                        connect: { serverIp: ip, serverPort: port }, 
-                        dynamic: { clients: 0, sv_maxclients: 0 } 
-                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
                 });
+            });
+        });
+    }
+
+    async getServerResources() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/info.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true, 
+                        resources: body.data.resources
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
+                });
+            });
+        });
+    }
+
+    async getServerInfo() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/info.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true, 
+                        server: body.data.vars
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
+                });
+            });
+        });
+    }
+
+    async getServerPlayers() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/players.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true, 
+                        players: body.data
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
+                });
+            });
+        });
+    }
+
+    async getServerClients() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/dynamic.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true, 
+                        clients: body.data.clients
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
+                });
+            });
+        });
+    }
+
+    async getServerMaxClients() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/dynamic.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true, 
+                        sv_maxclients: body.data.sv_maxclients
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
+                });
+            });
+        });
+    }
+
+    async getServerHostName() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/dynamic.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true, 
+                        hostname: body.data.hostname
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false
+                });
+            });
         });
     }
 
@@ -43,18 +143,17 @@ class ConnectionApi {
                     result({ 
                         online: true,
                         cfx: rawHeaders[5],
-                        connect: { serverIp: ip, serverPort: port }
+                        connect: { serverIp: this.ip, serverPort: this.port }
                     })
                 }
             ).on('error', () => {
                 result({ 
                     message: connectionApiFailed, 
-                    online: false,
-                    connect: { serverIp: ip, serverPort: port }
+                    online: false
                 });
             }).end()
         });
     }
 }
 
-module.exports.ConnectionApi = ConnectionApi;
+module.exports.Server = Server;
