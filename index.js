@@ -10,6 +10,24 @@ class Server {
         this.port = port;
     }
 
+    async getServerStatus() {
+        return new Promise((result, reject) => {
+            axios.get(`http://${this.ip}:${this.port}/info.json`, timeout)
+                .then(function (body) {
+                    result({ 
+                        online: true,
+                        status: 'Online'
+                    });
+                }).catch(function () {
+                result({ 
+                    message: connectionApiFailed, 
+                    online: false,
+                    status: 'Offline'
+                });
+            });
+        });
+    }
+
     async getServerDynamic() {
         return new Promise((result, reject) => {
             axios.get(`http://${this.ip}:${this.port}/dynamic.json`, timeout)

@@ -1,6 +1,6 @@
 {
   "name": "discodfivemapi",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Package to connect FiveM api to Discord JS",
   "main": "index.js",
   "scripts": {
