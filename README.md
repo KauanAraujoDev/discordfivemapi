@@ -4,7 +4,7 @@ Package to connect FiveM api to Discord JS
 **How-to install:**
 
 ```
-npm i discordfivemapi
+npm i discodfivemapi
 ```
 
 **NPM:** [npmjs.com/discordfivemapi](https://www.npmjs.com/package/discordfivemapi)
